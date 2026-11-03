@@ -1,7 +1,7 @@
 // category: 주 카테고리 / subcategories: 서브 태그 / authorNote: 본문과 별도의 작가 메모
 window.ARCHIVE_POSTS = [
   {
-    "id": "gamja-childhood-memory",
+    "id": "post1", "legacyIds": ["gamja-childhood-memory"],
     "title": "감자의 어릴적 기억",
     "date": "2026-11-03",
     "category": "ARPG",
@@ -33,7 +33,7 @@ window.ARCHIVE_POSTS = [
     ]
   },
   {
-    "id": "seol-wished",
+    "id": "post2", "legacyIds": ["seol-wished"],
     "title": "설은 바랐다.",
     "date": "2026-11-04",
     "category": "연성",
@@ -80,7 +80,7 @@ window.ARCHIVE_POSTS = [
     ]
   },
   {
-    "id": "bones-kirk-2017",
+    "id": "post3", "legacyIds": ["bones-kirk-2017"],
     "title": "민간인 보호 원칙",
     "date": "2026-11-04",
     "category": "연성",

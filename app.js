@@ -17,11 +17,16 @@ const renderBody = post => `<div class="prose">${post.body.map(p => /^\s*\*\s+\*
 function render() {
   const id = new URLSearchParams(location.search).get('post');
   if (id !== null) {
-    const post = posts.find(p => p.id === id);
+    const post = posts.find(p => p.id === id || p.legacyIds?.includes(id));
     if (!post) {
       document.title = '글을 찾을 수 없어요 | 문장 보관소';
       main.innerHTML = '<section class="intro"><p class="eyebrow">NOT FOUND</p><h1>글을 찾을 수 없어요.</h1><p>주소가 바뀌었거나 보관 중인 글일 수 있어요.</p><a class="back" href="?view=archive">모든 글로 돌아가기</a></section>';
       return;
+    }
+    if (id !== post.id) {
+      const canonical = new URL(location.href);
+      canonical.searchParams.set('post', post.id);
+      history.replaceState(null, '', canonical);
     }
     document.title = `${post.title} | 문장 보관소`;
     document.querySelector('meta[name="description"]').content = post.adult ? '성인가능 글 · 요소 : BDSM' : post.excerpt;
