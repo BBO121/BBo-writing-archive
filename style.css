@@ -36,3 +36,5 @@
 .post-tags .post-status{background:rgba(193,196,164,.09);border-color:#666953;color:var(--accent)}
 
 #main{min-height:60vh}.archive-page{padding:60px 0 70px}.section-heading h1{font-size:12px;font-weight:400;margin:0;line-height:1.5}.category-tabs{display:flex;flex-wrap:wrap;gap:22px;padding:22px 0 10px}.category-tabs a{font-size:12px;color:var(--muted);padding:5px 0 8px;border-bottom:1px solid transparent}.category-tabs a:hover{color:var(--text)}.category-tabs a[aria-current="page"]{color:var(--text);border-bottom-color:var(--accent)}@media(max-width:600px){.archive-page{padding-top:40px}.category-tabs{gap:20px}.category-tabs a{font-size:11px}}
+
+.author-note{border-top:1px solid var(--line);margin-top:35px;padding-top:18px;color:var(--muted);font-size:11px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
