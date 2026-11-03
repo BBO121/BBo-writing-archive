@@ -1,6 +1,6 @@
 'use strict';
 const main = document.querySelector('main');
-const posts = [...window.ARCHIVE_POSTS].sort((a, b) => b.date.localeCompare(a.date));
+const posts = [...window.ARCHIVE_POSTS].sort((a, b) => Number(a.id.replace(/^post/, '')) - Number(b.id.replace(/^post/, '')));
 const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
 const link = post => `?post=${encodeURIComponent(post.id)}`;
 const dateLabel = date => date.replaceAll('-', '.');
@@ -31,7 +31,7 @@ function render() {
     document.title = `${post.title} | 문장 보관소`;
     document.querySelector('meta[name="description"]').content = post.adult ? '성인가능 글 · 요소 : BDSM' : post.excerpt;
     const index = posts.indexOf(post);
-    const older = posts[index + 1];
+    const older = posts[index - 1];
     main.innerHTML = `<article class="article"><a class="back" href="?view=archive">← 모든 글</a><header class="article-header"><div class="meta">${meta(post)}</div><h1>${escapeHTML(post.title)}</h1>${(post.status || post.subcategories?.length) ? `<ul class="post-tags" aria-label="글 상태 및 서브 카테고리">${post.status ? `<li class="post-status">${escapeHTML(post.status)}</li>` : ''}${(post.subcategories || []).map(tag => `<li>${escapeHTML(tag)}</li>`).join('')}</ul>` : ''}</header>${post.adult ? `<section class="content-gate" aria-label="성인가능 글 안내"><div class="blur-preview" aria-hidden="true">${'<span></span>'.repeat(9)}</div><button type="button" class="reveal-button" id="reveal" aria-controls="post-content" aria-expanded="false"><strong>성인가능 글</strong><span>요소 : ${escapeHTML(post.elements)}</span><span class="reveal-hint">누르면 글이 보입니다</span></button></section>` : ''}<div id="post-content"${post.adult ? ' hidden' : ''}>${post.adult ? '' : renderBody(post)}</div>${post.authorNote ? `<aside class="author-note" aria-label="작가 메모">${escapeHTML(post.authorNote)}</aside>` : ''}<div class="article-actions"><a href="?view=archive">목록으로</a><button id="share" type="button">글 주소 복사</button></div>${older ? `<a class="next" href="${link(older)}"><span>이전 글</span><strong>${escapeHTML(older.title)}</strong><span aria-hidden="true">→</span></a>` : ''}</article>`;
     if (post.adult) {
       document.querySelector('#reveal').addEventListener('click', () => {
@@ -64,6 +64,6 @@ function render() {
   const selected = categories.includes(params.get('category')) ? params.get('category') : '';
   const visiblePosts = selected ? posts.filter(post => post.category === selected) : posts;
   const filters = [{label:'모두 보기',value:''}, ...categories.map(value => ({label:value,value}))];
-  main.innerHTML = `<section class="archive archive-page" aria-labelledby="archive-title"><div class="section-heading"><h1 id="archive-title">보관한 글</h1><span>${String(visiblePosts.length).padStart(2,'0')}</span></div><nav class="category-tabs" aria-label="글 카테고리">${filters.map(filter => `<a href="?view=archive${filter.value ? '&amp;category='+encodeURIComponent(filter.value) : ''}"${selected === filter.value ? ' aria-current="page"' : ''}>${escapeHTML(filter.label)}</a>`).join('')}</nav><div class="post-list">${visiblePosts.length ? visiblePosts.map(p => `<a class="post" href="${link(p)}"><span class="post-number">${String(posts.length-posts.indexOf(p)).padStart(2,'0')}</span><div class="post-content"><div class="meta">${meta(p)}</div><h3>${escapeHTML(p.title)}</h3></div><span class="post-arrow" aria-hidden="true">↗</span></a>`).join('') : '<p class="empty">아직 보관한 글이 없어요.</p>'}</div></section>`;
+  main.innerHTML = `<section class="archive archive-page" aria-labelledby="archive-title"><div class="section-heading"><h1 id="archive-title">보관한 글</h1><span>${String(visiblePosts.length).padStart(2,'0')}</span></div><nav class="category-tabs" aria-label="글 카테고리">${filters.map(filter => `<a href="?view=archive${filter.value ? '&amp;category='+encodeURIComponent(filter.value) : ''}"${selected === filter.value ? ' aria-current="page"' : ''}>${escapeHTML(filter.label)}</a>`).join('')}</nav><div class="post-list">${visiblePosts.length ? visiblePosts.map(p => `<a class="post" href="${link(p)}"><span class="post-number">${String(Number(p.id.replace(/^post/, ''))).padStart(2,'0')}</span><div class="post-content"><div class="meta">${meta(p)}</div><h3>${escapeHTML(p.title)}</h3></div><span class="post-arrow" aria-hidden="true">↗</span></a>`).join('') : '<p class="empty">아직 보관한 글이 없어요.</p>'}</div></section>`;
 }
 render();
